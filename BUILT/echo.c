@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 16:48:51 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/17 16:36:26 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:17:59 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ bool	check_option(char **cmd)
 	return (0);
 }
 
-void 	ft_echo_pipe(t_msh *msh, char **cmd, int i, int j, bool res)
+void	ft_echo_pipe(t_msh *msh, char **cmd, int i, int j, bool res)
 {
-	char *cmdd;
-	
+	char	*cmdd;
+
 	while (cmd[i])
 	{
 		cmdd = cmd[i];
@@ -47,9 +47,9 @@ void 	ft_echo_pipe(t_msh *msh, char **cmd, int i, int j, bool res)
 
 void	ft_echo(t_msh *msh, char **cmd)
 {
-	int	i;
-	int	j;
-	int fd;
+	int		i;
+	int		j;
+	int		fd;
 	bool	res;
 
 	fd = 1;
@@ -66,7 +66,6 @@ void	ft_echo(t_msh *msh, char **cmd)
 		ft_echo_pipe(msh, cmd, i, j, res);
 		return ;
 	}
-		printf("oui\n");
 	while (cmd[i])
 	{
 		if (i > j)

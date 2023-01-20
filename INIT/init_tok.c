@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 10:34:23 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/17 15:43:12 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:01:30 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,21 @@ void	ft_token_add_back(t_token **token, t_token *new)
 
 t_token	*ft_fill_token(t_msh *msh)
 {
-	char	**pipe;
-    t_token	*token;
-	int	i;
+	char		**pipe;
+	t_token		*token;
+	int			i;
 
 	i = 0;
-    token = NULL;
-	msh->pip = ft_strshr(msh->line, '|');
+	token = NULL;
 	pipe = tokenizator(msh->line, '|');
-   if (!pipe[i])
-       return (token);
+	if (!pipe[i])
+		return (token);
 	while (pipe[i])
 	{
 		ft_token_add_back(&token, ft_token_new(msh, pipe[i]));
 		i++;
 	}
+	msh->pip = i - 1;
 	ft_free_double(pipe);
-    return (token);
+	return (token);
 }

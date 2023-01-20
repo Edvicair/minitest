@@ -6,39 +6,38 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 00:20:01 by motaouss          #+#    #+#             */
-/*   Updated: 2023/01/11 16:14:24 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:55:22 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_type  ft_choose_type(int R)
+t_type	ft_choose_type(int R)
 {
-    t_type t;
-	
-    if (R == 1)
-        t = RE_G;
-    else if (R == 2)
-        t = H_DOC;
-    else if (R == -1)
-        t = RE_D;
-    else if (R == -2)
+	t_type	t;
+
+	if (R == 1)
+		t = RE_G;
+	else if (R == 2)
+		t = H_DOC;
+	else if (R == -1)
+		t = RE_D;
+	else if (R == -2)
 		t = RE_DD;
 	else
 		t = NO_REDIR;
-    return (t);
+	return (t);
 }
 
 t_redir	*ft_redir_new(int R, char *word)
 {
 	t_redir	*lst_redir;
-	char *cpy;
 
 	lst_redir = (t_redir *)malloc(sizeof(t_redir));
 	if (!lst_redir)
 		return (NULL);
-    lst_redir->type = ft_choose_type(R);
-    lst_redir->feldup = word; 
+	lst_redir->type = ft_choose_type(R);
+	lst_redir->feldup = word;
 	lst_redir->next = 0;
 	return (lst_redir);
 }
@@ -56,7 +55,7 @@ t_redir	*ft_redir_last(t_redir *redir)
 void	ft_redir_add_back(t_redir **redir, t_redir *new)
 {
 	t_redir	*lst_redir;
-	
+
 	if (redir)
 	{
 		if (*redir)
@@ -65,18 +64,18 @@ void	ft_redir_add_back(t_redir **redir, t_redir *new)
 			lst_redir->next = new;
 		}
 		else
-		    *redir = new;
+			*redir = new;
 	}
 }
 
 t_redir	*redi_less(char *str)
 {
-	int i;
-	int j;
-	int R;
-    t_redir *red;
-    
-    red = NULL;
+	int		i;
+	int		j;
+	int		R;
+	t_redir	*red;
+
+	red = NULL;
 	i = 0;
 	j = 0;
 	while (str[i])

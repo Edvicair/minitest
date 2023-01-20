@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 15:16:14 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/13 17:24:40 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:17:05 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,11 @@ void	ft_export_bis(t_msh *msh, bool egal, char **v_global, int i)
 			{
 				free(cpy->value);
 				cpy->value = NULL;
-
 			}
 			if (v_global[1])
-				cpy->value = ft_strdup(msh, v_global[1]);
+				cpy->value = ft_strdup(v_global[1]);
 			else
-				cpy->value = ft_strdup(msh, "");
+				cpy->value = ft_strdup("");
 			cpy->egal = egal;
 			break ;
 		}
@@ -61,9 +60,9 @@ void	ft_export_bis(t_msh *msh, bool egal, char **v_global, int i)
 			cpy->value = NULL;
 		}
 		if (v_global[1])
-			cpy->value = ft_strdup(msh, v_global[1]);
+			cpy->value = ft_strdup(v_global[1]);
 		else
-			cpy->value = ft_strdup(msh, "");
+			cpy->value = ft_strdup("");
 		cpy->egal = egal;
 	}
 	else if (!o && cpy->next == NULL)
@@ -90,7 +89,7 @@ void	ft_export(t_msh *msh, char **cmd)
 		v_global = ft_split(cmd[i], '=');
 		if (v_global[1] && (v_global[1][0] == 32 || v_global[1][0] == 9))
 		{
-			v_global[1] = ft_strdup(msh, "");
+			v_global[1] = ft_strdup("");
 			break ;
 		}
 		ft_export_bis(msh, egal, v_global, i);

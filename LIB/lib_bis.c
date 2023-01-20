@@ -1,50 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lib.c                                              :+:      :+:    :+:   */
+/*   lib_bis.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/12 16:09:39 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/17 17:10:42 by edvicair         ###   ########.fr       */
+/*   Created: 2023/01/20 11:38:31 by edvicair          #+#    #+#             */
+/*   Updated: 2023/01/20 11:39:49 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-char	*ft_substr(const char *s, unsigned int start, size_t len)
-{
-	char	*buya;
-	size_t	i;
-
-	i = 0;
-	buya = (char *)malloc(sizeof(char) * len + 1);
-	if (!buya)
-		return (NULL);
-	if (len == 0 || start >= ft_strlen(s))
-	{
-		buya[0] = '\0';
-		return (buya);
-	}
-	while (i < len)
-	{
-		buya[i] = s[start];
-		i++;
-		start++;
-	}
-	buya[i] = '\0';
-	return (buya);
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
+#include "../minishell.h"
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
@@ -74,22 +40,18 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
-char	*ft_strdup(t_msh *msh, const char *s)
+char	*ft_strdup(const char *s)
 {
 	int		i;
 	int		s_len;
 	char	*s_cpy;
 
-	i = 0;
-	s_len = ft_strlen(s);
-	s_cpy = (char *)malloc(sizeof(char) * s_len + 1);
+	i = -1;
+	s_cpy = (char *)malloc(sizeof(char) * ft_strlen(s) + 1);
 	if (!s_cpy)
 		return (NULL);
-	while (s[i])
-	{
+	while (s[++i])
 		s_cpy[i] = s[i];
-		i++;
-	}
 	s_cpy[i] = '\0';
 	return (s_cpy);
 }

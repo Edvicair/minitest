@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 17:00:59 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/17 15:41:04 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 10:43:37 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,22 +48,22 @@ void	redir_out(t_redir *redir, t_msh *msh)
 			close(msh->out);
 		msh->out = open(redir->feldup, O_CREAT | O_APPEND | O_WRONLY, 0664);
 		if (msh->out < 0)
-				printf("can't open %s\n", redir->feldup);
+			printf("can't open %s\n", redir->feldup);
 	}
 }
 
 void	ft_check_redirection(t_msh *msh)
 {
-	t_redir *cpy;
+	t_redir	*cpy;
 
 	cpy = msh->token->redir;
 	while (cpy)
 	{
-			redir_in(cpy, msh);
-			redir_out(cpy, msh);
+		redir_in(cpy, msh);
+		redir_out(cpy, msh);
 		if (cpy->next)
 			cpy = cpy->next;
 		else
-			break;
+			break ;
 	}
 }

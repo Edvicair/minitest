@@ -1,39 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/09 16:58:49 by edvicair          #+#    #+#             */
-/*   Updated: 2022/11/12 15:23:50 by edvicair         ###   ########.fr       */
+/*   Created: 2021/01/09 15:12:51 by edvicair          #+#    #+#             */
+/*   Updated: 2023/01/20 11:34:46 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-size_t	ft_strlcat(char *dest, const char *src, size_t size)
+int	ft_atoi(const char *nptr)
 {
-	size_t	i;
-	size_t	lensrc;
-	size_t	lendest;
+	int	i;
+	int	less;
+	int	nb;
 
 	i = 0;
-	lensrc = ft_strlen(src);
-	lendest = ft_strlen(dest);
-	if (size <= lendest)
-		lensrc += size;
-	else
-		lensrc += lendest;
-	if (size > lendest)
+	less = 1;
+	nb = 0;
+	while ((nptr[i] >= 9 && nptr[i] <= 13) || nptr[i] == 32)
+		i++;
+	if (nptr[i] == 45 || nptr[i] == 43)
 	{
-		while (src[i] && (lendest + 1) < size)
-		{
-			dest[lendest] = src[i];
-			i++;
-			lendest++;
-		}
+		if (nptr[i] == 45)
+			less = -less;
+		i++;
 	}
-	dest[lendest] = '\0';
-	return (lensrc);
+	while (nptr[i] >= '0' && nptr[i] <= '9')
+	{
+		nb *= 10;
+		nb += nptr[i] - 48;
+		i++;
+	}
+	return (nb * less);
 }
