@@ -6,30 +6,13 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 00:20:01 by motaouss          #+#    #+#             */
-/*   Updated: 2023/01/20 11:55:22 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/30 17:47:09 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_type	ft_choose_type(int R)
-{
-	t_type	t;
-
-	if (R == 1)
-		t = RE_G;
-	else if (R == 2)
-		t = H_DOC;
-	else if (R == -1)
-		t = RE_D;
-	else if (R == -2)
-		t = RE_DD;
-	else
-		t = NO_REDIR;
-	return (t);
-}
-
-t_redir	*ft_redir_new(int R, char *word)
+t_redir	*ft_redir_new(t_msh *msh, int R, char *word)
 {
 	t_redir	*lst_redir;
 
@@ -37,7 +20,10 @@ t_redir	*ft_redir_new(int R, char *word)
 	if (!lst_redir)
 		return (NULL);
 	lst_redir->type = ft_choose_type(R);
-	lst_redir->feldup = word;
+	if (lst_redir->type == H_DOC)
+		lst_redir->feldup = here_doc(msh, word);
+	else
+		lst_redir->feldup = word;
 	lst_redir->next = 0;
 	return (lst_redir);
 }
@@ -68,42 +54,51 @@ void	ft_redir_add_back(t_redir **redir, t_redir *new)
 	}
 }
 
-t_redir	*redi_less(char *str)
+int	redi_bis(char *str, int *i)
+{
+	int	red;
+
+	red = 0;
+	while (str[*i] && str[*i] != '<' && str[*i] != '>')
+	{
+		if (str[*i] == '\'' || str[*i] == '"')
+			*i = split_what(str, *i, str[*i]);
+		*i += 1;
+	}
+	while (str[*i] && (str[*i] == '<' || str[*i] == '>'))
+	{
+		if (str[*i] == '>')
+			red--;
+		else if (str[*i] == '<')
+			red++;
+		*i += 1;
+	}
+	while (str[*i] == ' ')
+		*i += 1;
+	return (red);
+}
+
+t_redir	*redi_less(t_msh *msh, char *str)
 {
 	int		i;
 	int		j;
-	int		R;
-	t_redir	*red;
+	int		red;
+	t_redir	*redir;
 
-	red = NULL;
+	redir = NULL;
 	i = 0;
 	j = 0;
 	while (str[i])
 	{
-		R = 0;
-		while (str[i] && str[i] != '<' && str[i] != '>')
-		{
-			if (str[i] == '\'' || str[i] == '"')
-				i = split_what(str, i, str[i]);
-			i++;
-		}
-		while (str[i] && (str[i] == '<' || str[i] == '>'))
-		{
-			if (str[i] == '>')
-				R--;
-			else if (str[i] == '<')
-				R++;
-			i++;
-		}
-		while (str[i] == ' ')
-			i++;
+		red = redi_bis(str, &i);
 		j = i;
 		while (str[j] && str[j] != ' ' && str[j] != '>' && str[j] != '>')
 			j++;
-		if (R != 0)
-			ft_redir_add_back(&red, ft_redir_new(R, ft_substr2(str, i, j)));
-		else if (R == 0 && !(red))
-			ft_redir_add_back(&red, ft_redir_new(R, NULL));
+		if (red != 0)
+			ft_redir_add_back(&redir,
+				ft_redir_new(msh, red, ft_substr2(str, i, j)));
+		else if (red == 0 && !(redir))
+			ft_redir_add_back(&redir, ft_redir_new(msh, red, NULL));
 	}
-	return (red);
+	return (redir);
 }

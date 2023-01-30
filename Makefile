@@ -6,7 +6,7 @@
 #    By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/30 07:30:46 by edvicair          #+#    #+#              #
-#    Updated: 2023/01/20 11:47:15 by edvicair         ###   ########.fr        #
+#    Updated: 2023/01/30 15:51:04 by edvicair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,10 +18,26 @@ SRC = 	minishell.c \
 		LIB/ft_free.c \
 		LIB/lib.c \
 		LIB/lib_bis.c \
+		LIB/utils.c \
 		LIB/split.c \
+		LIB/ft_isalnum.c \
 		LIB/ft_atoi.c \
+		LIB/ft_itoa.c \
+		LIB/lib_labiz.c \
+		INIT/init_msh.c \
 		INIT/init_env.c \
 		INIT/init_tok.c \
+		INIT/init_redir.c \
+		PARSING/parsing.c \
+		PARSING/utils_parsing.c \
+		PARSING/utils_parsing2.c \
+		PARSING/utils_parsing3.c \
+		PARSING/tokenizator.c \
+		PARSING/syntax.c \
+		PARSING/expand.c \
+		PARSING/here_doc.c \
+		PARSING/expand_hdoc.c \
+		PARSING/sida.c \
 		BUILT/cd.c \
 		BUILT/pwd.c \
 		BUILT/export.c \
@@ -30,15 +46,11 @@ SRC = 	minishell.c \
 		BUILT/unset.c \
 		BUILT/echo.c \
 		BUILT/exit.c \
-		PARSING/parsing.c \
-		PARSING/tokenizator.c \
-		PARSING/utils_parsing.c \
-		PARSING/syntax.c \
-		PARSING/utils_parsing2.c \
 		EXEC/child.c \
 		EXEC/redir.c \
 		EXEC/exec.c \
-		INIT/init_redir.c
+		EXEC/built.c
+
 OBJ=$(SRC:%.c=%.o)
 
 all: $(NAME)

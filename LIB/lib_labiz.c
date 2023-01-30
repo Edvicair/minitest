@@ -1,40 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   lib_labiz.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/30 15:21:58 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/30 11:34:54 by edvicair         ###   ########.fr       */
+/*   Created: 2023/01/30 15:33:38 by edvicair          #+#    #+#             */
+/*   Updated: 2023/01/30 15:34:15 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_pwd(t_msh *msh)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	char	*pwd;
-	int		fd;
+	unsigned char	*cpy;
+	size_t			i;
 
-	fd = 1;
-	pwd = malloc(sizeof(char) * 200);
-	if (!pwd)
-		return ;
-	if (msh->out)
-		fd = msh->out;
-	pwd = getcwd(pwd, 200);
-	if (!pwd)
-		return ;
-	else if (msh->pip)
+	i = 0;
+	cpy = (unsigned char *)s;
+	while (i < n)
 	{
-		write(msh->fd[1], pwd, ft_strlen(pwd));
-		write(msh->fd[1], "\n", 1);
+		cpy[i] = (unsigned char)c;
+		i++;
 	}
-	else
-	{
-		write(fd, pwd, ft_strlen(pwd));
-		write(fd, "\n", 1);
-	}
-	free(pwd);
+	s = (void *)cpy;
+	return (s);
+}
+
+void	ft_bzero(void *s, size_t n)
+{
+	ft_memset(s, 0, n);
 }

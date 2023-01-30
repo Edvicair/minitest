@@ -6,94 +6,76 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 20:39:31 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/20 12:28:26 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/30 17:02:31 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_built(t_msh *msh, char **cmd)
+int	g_value_exit;
+
+void	ft_end_cmd(t_msh *msh, int i)
 {
-	if (cmd[0] && (!ft_strncmp(cmd[0], "cd", 3) || !ft_strncmp(cmd[0], "exit", 5)))
-		return (1);
-	else if (cmd[0] && (!ft_strncmp(cmd[0], "echo", 5) || !ft_strncmp(cmd[0], "pwd", 4)))
-		return (1);
-	else if (cmd[0] && (!ft_strncmp(cmd[0], "env", 4) || !ft_strncmp(cmd[0], "getenv", 7)))
-		return (1);
-	else if (cmd[0] && (!ft_strncmp(cmd[0], "export", 7) || !ft_strncmp(cmd[0], "unset", 6)))
-		return (1);
-	return (0);
+	close(msh->fd[0]);
+	close(msh->fd[1]);
+	dup2(msh->stin, 0);
+	dup2(msh->stout, 1);
+	close(msh->stin);
+	close(msh->stout);
+	while (i > 0)
+		waitpid(msh->tab[--i], NULL, 0);
+	ft_free_token(msh, msh->token);
+	msh->token = NULL;
+	free(msh->tab);
+	msh->tab = 0;
 }
 
-void	exec_built(t_msh *msh, char **cmd, int stin)
+int	ft_cmd_bis(t_msh *msh, t_token *cpy, int i)
 {
-	if (msh->pip == 0)
+	if (is_built(msh, cpy->cmd))
+		exec_built(msh, cpy->cmd);
+	else
 	{
-		if (cmd[0] && !ft_strncmp(cmd[0], "cd", 3))
-			ft_cd(msh, cmd);
-		else if (cmd[0] && !ft_strncmp(cmd[0], "unset", 6))
-			ft_unset(msh, cmd);
-		if (cmd[0] && !ft_strncmp(cmd[0], "exit", 5))
-			ft_exit(msh, stin);
+		one_child(msh, cpy, i);
+		if (cpy->child && msh->pip)
+		{
+			dup2(msh->fd[0], 0);
+			close(msh->fd[0]);
+			close(msh->fd[1]);
+		}
+		unlink_here_doc(msh, cpy);
+		i++;
 	}
-	if (cmd[0] && !ft_strncmp(cmd[0], "pwd", 4))
-		ft_pwd(msh);
-	else if (cmd[0] && !ft_strncmp(cmd[0], "env", 4))
-		ft_env(msh);
-	else if (cmd[0] && !ft_strncmp(cmd[0], "echo", 5))
-		ft_echo(msh, cmd);
-	else if (cmd[0] && !ft_strncmp(cmd[0], "export", 7))
-		ft_export(msh, cmd);
+	return (i);
 }
 
 void	ft_cmd(t_msh *msh)
 {
-	t_token *cpy;
-	t_redir *redir_cpy;
-	int nb;
-	int i;
+	t_token	*cpy;
+	t_redir	*redir_cpy;
+	int		nb;
+	int		i;
 
 	i = 0;
 	cpy = msh->token;
 	nb = msh->pip;
 	msh->stin = dup(0);
+	msh->stout = dup(1);
 	msh->tab = (int *)malloc(sizeof(int) * (msh->pip + 1));
 	if (!msh->tab)
-	{
-		ft_free_token(msh, msh->token);
 		return ;
-	}
-	while (msh->pip >= 0)
+	while (msh->pip >= 0 && msh->tab)
 	{
 		if (pipe(msh->fd))
-			break;
-		ft_check_redirection(msh);
-	 	if (is_built(msh, cpy->cmd))
-	 		exec_built(msh, cpy->cmd, msh->stin);
-		else
-		{
-			one_child(msh, cpy, i, msh->stin);
-			if (cpy->child && msh->pip)
-			{
-				dup2(msh->fd[0], 0);
-				close(msh->fd[0]);
-				close(msh->fd[1]);			
-			}
-			i++;
-		}
+			break ;
+		if (!ft_check_redirection(msh, cpy))
+			i = ft_cmd_bis(msh, cpy, i);
 		if (msh->pip)
 			cpy = cpy->next;
 		msh->pip--;
 	}
-	close(msh->fd[0]);
-	close(msh->fd[1]);
-	while (i > 0)
-		waitpid(msh->tab[--i], NULL, 0);
-	dup2(msh->stin, 0);
-	close(msh->stin);
 	msh->pip = nb;
-	ft_free_token(msh, msh->token);
-	free(msh->tab);
+	ft_end_cmd(msh, i);
 }
 
 int	main(int ac, char **av, char **env)
@@ -102,12 +84,13 @@ int	main(int ac, char **av, char **env)
 	t_env	*cpy;
 
 	ft_init_struct(&msh, env);
+	g_value_exit = 0;
 	while (1)
 	{
-		msh.line = space_chips(readline("minizboub-> "));
+		sidaction();
+		msh.line = readline("\033[0;35mMinizboub-> \033[0;37m");
 		if (msh.line)
 		{
-			add_history(msh.line);
 			if (parser(&msh))
 			{
 				if (msh.token)
@@ -117,9 +100,9 @@ int	main(int ac, char **av, char **env)
 			msh.line = NULL;
 		}
 		else
-			break;
+			break ;
 	}
 	printf("exit\n");
-	ft_exit(&msh, msh.stin);
+	ft_exit(&msh, g_value_exit);
 	return (0);
 }

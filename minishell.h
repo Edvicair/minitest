@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 20:43:04 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/20 11:51:08 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/30 16:13:16 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <curses.h>
+
+extern int	g_value_exit;
 
 typedef struct s_env
 {
@@ -70,43 +72,24 @@ typedef struct s_msh
 	int		pip;
 	int		fd[2];
 	int		stin;
+	int		stout;
 	int		in;
 	int		out;
 	int		*tab;
 	t_token	*token;
 }				t_msh;
 
-						//PARSING//
-int		is_quote(char *str);
-int		split_what(char *str, int i, char quote);
-int		parser(t_msh *msh);
-int		strlen_quote(char *str, int min, int max);
-int		find_quote(char *str, int min, int max);
-int		is_pipe(char *str);
-int		find_pipe(char *str, int i);
-int		split_quote(char *str, int i, char quote);
-int		is_quote(char *str);
-int		strlen_quote(char *str, int min, int max);
-int		pipe_error(char *line);
-int		redir_error(char *line);
-int		ft_strlen_redir(char *str);
-char	**tokenizator(char *str, char c);
-char	*ft_substr2(const char *s, int min, int max);
-char	*space_chips(char *line);
-char	*ft_substr_pipe(const char *s, unsigned int start, unsigned int end);
-char	*ft_substr_redir(char *s);
-t_redir	*redi_less(char *str);
-t_redir	*ft_redir_last(t_redir *redir);
-t_redir	*ft_redir_new(int R, char *word);
-t_type	ft_choose_type(int R);
-void	ft_redir_add_back(t_redir **redir, t_redir *new);
-//void	freezer(t_token *token);
-//int	tokenizator(char *str, t_token *token);
-
-						// EXEC //
-void	one_child(t_msh *msh, t_token *token, int i, int stin);
-void	exec(t_msh *msh, char **cmd, char **env);
-void	ft_check_redirection(t_msh *msh);
+						// INIT //
+char	**ft_split_space(char const *s);
+void	ft_init_struct(t_msh *msh, char **env);
+void	ft_env_add_back(t_env **env, t_env *new);
+void	ft_loc_add_back(t_loc **loc, t_loc *new);
+void	ft_free_token(t_msh *msh, t_token *token);
+t_token	*ft_fill_token(t_msh *msh);
+t_env	*fill_env(t_msh *msh, char **env);
+t_env	*ft_env_new(t_msh *msh, char *name, char *value, bool egal);
+t_loc	*ft_loc_last(t_loc *loc);
+t_loc	*ft_loc_new(void *content);
 
 						// LIB //
 size_t	ft_strlen(const char *s);
@@ -114,12 +97,63 @@ bool	ft_strshr(const char *s, int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_atoi(const char *nptr);
-char	*ft_strjoin(t_msh *msh, char const *s1, char const *s2);
+char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
 char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s);
 void	ft_free_double(char **s);
 void	ft_free_env(t_env *env);
+void	ft_bzero(void *s, size_t n);
+t_type	ft_choose_type(int R);
+size_t	count_tab(t_env *env);
+
+						//PARSING//
+int		is_quote(char *str);
+int		parser(t_msh *msh);
+int		split_what(char *str, int i, char quote);
+int		find_quote(char *str, int min, int max);
+int		strlen_quote(char *str, int min, int max);
+int		is_pipe(char *str);
+int		count_bis(char *str, char c, int i, bool a);
+int		find_pipe(char *str, int i);
+int		split_quote(char *str, int i, char quote);
+int		redir_error(char *line);
+int		is_quote(char *str);
+int		strlen_quote(char *str, int min, int max);
+int		pipe_error(char *line);
+int		ft_strlen_redir(char *str);
+int		sida_f(int var);
+int		ft_isalnum(int c);
+char	*here_doc(t_msh *msh, char *word);
+char	**tokenizator(char *str, char c);
+char	*ft_substr2(const char *s, int min, int max);
+char	*space_chips(char *line);
+char	*add_expand_hdoc(t_msh *msh, char *line);
+char	*fill_expand_hdoc(t_msh *msh, char *line, int i, int j, char *word);
+char	*fill_no_expand_hdoc(char *line, char *word, int i, int j);
+char	*ft_substr_pipe(const char *s, unsigned int start, unsigned int end);
+char	*ft_substr_redir(char *s);
+char	*add_expand(t_msh *msh);
+char	*fill_no_expand(t_msh *msh, char *word, int i, int j);
+char	*fill_expand(t_msh *msh, int i, int j, char *word);
+char	*check_env_expand(t_msh *msh, char *str);
+char	*check_env_expand_hdoc(t_msh *msh, char *str);
+char	*valeur_retour(t_msh *msh, char *line);
+char	*valeur_retour_bis(t_msh *msh, char *line);
+char	*ft_itoa(int n);
+void	add_expand_hdoc_bis(t_msh *msh, char *line, int i);
+void	add_expand_bis(t_msh *msh, int i);
+void	freezer(char **token);
+void	ft_redir_add_back(t_redir **redir, t_redir *new);
+void	sidaction(void);
+void	sidametocosita(int signum);
+void	unlink_here_doc(t_msh *msh, t_token *token);
+void	sida_c(int signum);
+void	sida_d(int signum);
+t_redir	*redi_less(t_msh *msh, char *str);
+t_redir	*ft_redir_last(t_redir *redir);
+t_redir	*ft_redir_new(t_msh *msh, int R, char *word);
+t_type	ft_choose_type(int R);
 
 						// BUILT //
 char	*ft_getenv(t_msh *msh, char *path);
@@ -128,21 +162,16 @@ void	ft_export(t_msh *msh, char **cmd);
 void	ft_sort_export(t_msh *msh);
 void	ft_unset(t_msh *msh, char **cmd);
 void	ft_echo(t_msh *msh, char **cmd);
-void	ft_exit(t_msh *msh, int stin);
+void	ft_exit(t_msh *msh, int value);
 void	ft_pwd(t_msh *msh);
 void	ft_env(t_msh *msh);
 void	ft_cd(t_msh *msh, char **cmd);
 
-						// INIT //
-char	**ft_split_space(char const *s);
-void	ft_init_struct(t_msh *msh, char **env);
-void	ft_env_add_back(t_env **env, t_env *new);
-void	ft_loc_add_back(t_loc **loc, t_loc *new);
-void	ft_free_token(t_msh *msh, t_token *token);
-t_env	*ft_env_new(t_msh *msh, char *name, char *value, bool egal);
-t_loc	*ft_loc_new(void *content);
-t_loc	*ft_loc_last(t_loc *loc);
-t_token	*ft_fill_token(t_msh *msh);
-t_redir	*redi_less(char *str);
+						// EXEC //
+int		is_built(t_msh *msh, char **cmd);
+int		ft_check_redirection(t_msh *msh, t_token *token);
+void	exec_built(t_msh *msh, char **cmd);
+void	one_child(t_msh *msh, t_token *token, int i);
+void	exec(t_msh *msh, char **cmd, char **env);
 
 #endif

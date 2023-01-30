@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 12:47:57 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/20 12:19:02 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/30 11:34:18 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_cd_home(t_msh *msh)
 
 	pwd = malloc(sizeof(char) * 200);
 	if (!pwd)
-		printf("error pwd/n");
+		return ;
 	pwd = getcwd(pwd, 200);
 	ft_export_pwd(msh, "OLDPWD", pwd);
 	free(pwd);
@@ -49,7 +49,7 @@ void	ft_cd_home(t_msh *msh)
 	home_path = getenv("HOME");
 	ret = chdir(home_path);
 	if (ret == -1)
-		printf("cd: no such file or directory : %s\n", home_path);
+		printf("\033[0;31mcd: no such file or directory : %s\n", home_path);
 	else
 		ft_export_pwd(msh, "PWD", home_path);
 }
@@ -62,7 +62,7 @@ void	ft_cd_old(t_msh *msh)
 
 	pwd = malloc(sizeof(char) * 200);
 	if (!pwd)
-		printf("error pwd/n");
+		return ;
 	old_pwd = ft_getenv(msh, "OLDPWD");
 	pwd = getcwd(pwd, 200);
 	ft_export_pwd(msh, "OLDPWD", pwd);
@@ -70,11 +70,10 @@ void	ft_cd_old(t_msh *msh)
 	pwd = NULL;
 	ret = chdir(old_pwd);
 	if (ret == -1)
-		printf("cd: no such file or directory : %s\n", old_pwd);
+		printf("\033[0;31mcd: no such file or directory : %s\n", old_pwd);
 	else
-	{
 		ft_export_pwd(msh, "PWD", old_pwd);
-	}
+	free(old_pwd);
 }
 
 void	ft_cd_path(t_msh *msh, char **cmd)
@@ -85,16 +84,21 @@ void	ft_cd_path(t_msh *msh, char **cmd)
 	char	*new_pwd;
 
 	pwd = malloc(sizeof(char) * 200);
-	new_pwd = malloc(sizeof(char) * 200);
 	if (!pwd)
-		printf("error pwd/n");
+		return ;
+	new_pwd = malloc(sizeof(char) * 200);
+	if (!new_pwd)
+	{
+		free(pwd);
+		return ;
+	}
 	pwd = getcwd(pwd, 200);
 	ft_export_pwd(msh, "OLDPWD", pwd);
 	free(pwd);
 	pwd = NULL;
 	ret = chdir(cmd[1]);
 	if (ret == -1)
-		printf("cd: no such file or directory : %s\n", cmd[1]);
+		printf("\033[0;31mcd: no such file or directory : %s\n", cmd[1]);
 	else
 		ft_export_pwd(msh, "PWD", getcwd(new_pwd, 200));
 	free(new_pwd);
@@ -105,10 +109,10 @@ void	ft_cd(t_msh *msh, char **cmd)
 {
 	if (!cmd[1])
 		ft_cd_home(msh);
+	else if (cmd[1] && !ft_strncmp("-", cmd[1], 2))
+		ft_cd_old(msh);
 	else if (cmd[1] && !ft_strncmp("--", cmd[1], 3))
 		ft_cd_home(msh);
 	else if (cmd[1])
 		ft_cd_path(msh, cmd);
-	// else if (cmd[1] && !ft_strncmp("-", cmd[1], 2))
-	// 	ft_cd_old(msh);
 }
