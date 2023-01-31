@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 10:34:23 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/30 15:50:31 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:40:03 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,6 @@ t_token	*ft_token_new(t_msh *msh, char *cmd_p)
 	lst_token->redir = redi_less(msh, cmd_p);
 	tmp = ft_substr_redir(cmd_p);
 	lst_token->cmd = tokenizator(tmp, ' ');
-	int i = 0;
-	while (lst_token->cmd[i])
-	{
-		printf("TOTO = %s\n", lst_token->cmd[i]);
-		i++;
-	}
 	free(tmp);
 	lst_token->next = 0;
 	return (lst_token);

@@ -6,11 +6,13 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 04:36:08 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/25 04:45:57 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:34:53 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+
 
 void	ft_free_double(char **s)
 {

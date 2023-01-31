@@ -1,41 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   utils_built.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/30 15:21:58 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/31 15:08:31 by edvicair         ###   ########.fr       */
+/*   Created: 2023/01/31 14:59:02 by edvicair          #+#    #+#             */
+/*   Updated: 2023/01/31 15:03:13 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_pwd(t_msh *msh)
+void    ft_cd_fail(char *s)
 {
-	char	*pwd;
-	int		fd;
-
-	fd = 1;
-	pwd = malloc(sizeof(char) * 200);
-	if (!pwd)
-		return ;
-	if (msh->out)
-		fd = msh->out;
-	pwd = getcwd(pwd, 200);
-	if (!pwd)
-		return ;
-	else if (msh->pip)
-	{
-		write(msh->fd[1], pwd, ft_strlen(pwd));
-		write(msh->fd[1], "\n", 1);
-	}
-	else
-	{
-		write(fd, pwd, ft_strlen(pwd));
-		write(fd, "\n", 1);
-	}
-	free(pwd);
-	g_value_exit = 0;
+    g_value_exit = 1;
+    printf("\033[0;31mcd: no such file or directory : %s\n", s);
 }

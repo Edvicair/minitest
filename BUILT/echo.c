@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 16:48:51 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/24 06:28:55 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:07:09 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	check_option(char **cmd)
 				return (2);
 		}
 	}
+	g_value_exit = 0;
 	return (1);
 }
 

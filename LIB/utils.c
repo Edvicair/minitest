@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 00:48:15 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/30 17:46:44 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/30 19:09:25 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,27 +61,6 @@ char	*valeur_retour(t_msh *msh, char *line)
 		{
 			ss = "?\0";
 			line = fill_expand(msh, i, (i + 2), ss);
-			return (line);
-		}
-		i++;
-	}
-	return (line);
-}
-
-char	*valeur_retour_bis(t_msh *msh, char *line)
-{
-	int		i;
-	char	*ss;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '\'')
-			i = split_what(line, i, line[i]);
-		if (line[i] == '$' && line[i + 1] == '?')
-		{
-			ss = "?\0";
-			line = fill_expand_hdoc(msh, line, i, (i + 2), ss);
 			return (line);
 		}
 		i++;

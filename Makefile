@@ -6,7 +6,7 @@
 #    By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/30 07:30:46 by edvicair          #+#    #+#              #
-#    Updated: 2023/01/30 15:51:04 by edvicair         ###   ########.fr        #
+#    Updated: 2023/01/31 15:04:08 by edvicair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,6 @@ SRC = 	minishell.c \
 		PARSING/syntax.c \
 		PARSING/expand.c \
 		PARSING/here_doc.c \
-		PARSING/expand_hdoc.c \
 		PARSING/sida.c \
 		BUILT/cd.c \
 		BUILT/pwd.c \
@@ -46,10 +45,11 @@ SRC = 	minishell.c \
 		BUILT/unset.c \
 		BUILT/echo.c \
 		BUILT/exit.c \
+		BUILT/utils_built.c \
 		EXEC/child.c \
 		EXEC/redir.c \
 		EXEC/exec.c \
-		EXEC/built.c
+		EXEC/built.c 
 
 OBJ=$(SRC:%.c=%.o)
 

@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 12:47:57 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/30 11:34:18 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:06:23 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,12 @@ void	ft_cd_home(t_msh *msh)
 	home_path = getenv("HOME");
 	ret = chdir(home_path);
 	if (ret == -1)
-		printf("\033[0;31mcd: no such file or directory : %s\n", home_path);
+		ft_cd_fail(home_path);
 	else
+	{
 		ft_export_pwd(msh, "PWD", home_path);
+		g_value_exit = 0;
+	}
 }
 
 void	ft_cd_old(t_msh *msh)
@@ -70,9 +73,12 @@ void	ft_cd_old(t_msh *msh)
 	pwd = NULL;
 	ret = chdir(old_pwd);
 	if (ret == -1)
-		printf("\033[0;31mcd: no such file or directory : %s\n", old_pwd);
+		ft_cd_fail(old_pwd);
 	else
+	{
 		ft_export_pwd(msh, "PWD", old_pwd);
+		g_value_exit = 0;
+	}
 	free(old_pwd);
 }
 
@@ -98,9 +104,12 @@ void	ft_cd_path(t_msh *msh, char **cmd)
 	pwd = NULL;
 	ret = chdir(cmd[1]);
 	if (ret == -1)
-		printf("\033[0;31mcd: no such file or directory : %s\n", cmd[1]);
+		ft_cd_fail(cmd[1]);
 	else
+	{
 		ft_export_pwd(msh, "PWD", getcwd(new_pwd, 200));
+		g_value_exit = 0;
+	}
 	free(new_pwd);
 	new_pwd = NULL;
 }

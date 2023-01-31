@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 12:00:08 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/30 16:16:41 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:34:06 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,12 @@ char	*here_doc(t_msh *msh, char *word)
 	while (1)
 	{
 		line = readline("=>");
-		//line = add_expand_hdoc(msh, line);
-		if (!ft_strncmp(line, word, ft_strlen(word)))
+		if (!(line) || !ft_strncmp(line, word, ft_strlen(word)))
 		{
 			free(line);
 			break ;
 		}
-		if (line)
+		else
 			write(hdoc, line, ft_strlen(line));
 		write(hdoc, "\n", 1);
 		free(line);

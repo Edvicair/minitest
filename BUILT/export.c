@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 15:16:14 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/20 20:33:56 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:08:05 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,5 @@ void	ft_export(t_msh *msh, char **cmd)
 		ft_free_double(v_global);
 		i++;
 	}
+	g_value_exit = 0;
 }

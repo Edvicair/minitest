@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 20:43:04 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/30 16:13:16 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:21:01 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,16 +128,12 @@ char	*here_doc(t_msh *msh, char *word);
 char	**tokenizator(char *str, char c);
 char	*ft_substr2(const char *s, int min, int max);
 char	*space_chips(char *line);
-char	*add_expand_hdoc(t_msh *msh, char *line);
-char	*fill_expand_hdoc(t_msh *msh, char *line, int i, int j, char *word);
-char	*fill_no_expand_hdoc(char *line, char *word, int i, int j);
 char	*ft_substr_pipe(const char *s, unsigned int start, unsigned int end);
 char	*ft_substr_redir(char *s);
 char	*add_expand(t_msh *msh);
 char	*fill_no_expand(t_msh *msh, char *word, int i, int j);
 char	*fill_expand(t_msh *msh, int i, int j, char *word);
 char	*check_env_expand(t_msh *msh, char *str);
-char	*check_env_expand_hdoc(t_msh *msh, char *str);
 char	*valeur_retour(t_msh *msh, char *line);
 char	*valeur_retour_bis(t_msh *msh, char *line);
 char	*ft_itoa(int n);
@@ -150,6 +146,7 @@ void	sidametocosita(int signum);
 void	unlink_here_doc(t_msh *msh, t_token *token);
 void	sida_c(int signum);
 void	sida_d(int signum);
+void	sida_k(int signum);
 t_redir	*redi_less(t_msh *msh, char *str);
 t_redir	*ft_redir_last(t_redir *redir);
 t_redir	*ft_redir_new(t_msh *msh, int R, char *word);
@@ -166,6 +163,7 @@ void	ft_exit(t_msh *msh, int value);
 void	ft_pwd(t_msh *msh);
 void	ft_env(t_msh *msh);
 void	ft_cd(t_msh *msh, char **cmd);
+void    ft_cd_fail(char *s);
 
 						// EXEC //
 int		is_built(t_msh *msh, char **cmd);

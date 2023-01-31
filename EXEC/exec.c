@@ -6,11 +6,21 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 17:46:25 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/30 11:32:54 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:19:44 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	ft_free_child(t_msh *msh, t_env *cpy, char **env, char *paths)
+{
+		ft_free_double(env);
+		ft_free_env(cpy);
+		ft_free_token(msh, msh->token);
+		free(paths);
+		free(msh->line);
+		free(msh->tab);
+}
 
 static char	*test_path(t_msh *msh, char **cmd, char **path)
 {
@@ -66,14 +76,13 @@ void	exec(t_msh *msh, char **cmd, char **env)
 	if (paths == NULL)
 	{
 		printf("\033[0;31mCan't find command\n");
-		free(paths);
-		ft_free_double(env);
-		exit(0);
+		ft_free_child(msh, cpy, env, paths);
+		exit(127);
 	}
 	else if (execve(paths, cmd, env) == -1)
 	{
 		printf("\033[0;31mCan't execve\n");
-		free(paths);
-		exit(0);
+		ft_free_child(msh, cpy, env, paths);
+		exit(127);
 	}
 }

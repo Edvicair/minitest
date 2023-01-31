@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 20:28:00 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/30 12:37:26 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:07:50 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,5 @@ void	ft_env(t_msh *msh)
 		else
 			break ;
 	}
+	g_value_exit = 0;
 }

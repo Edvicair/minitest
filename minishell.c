@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 20:39:31 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/30 17:02:31 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:40:00 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	ft_end_cmd(t_msh *msh, int i)
 	close(msh->stout);
 	while (i > 0)
 		waitpid(msh->tab[--i], NULL, 0);
+	// if (g_value_exit != 131 && g_value_exit != 132)
+	// 	g_value_exit = 127;
 	ft_free_token(msh, msh->token);
 	msh->token = NULL;
 	free(msh->tab);
@@ -43,9 +45,9 @@ int	ft_cmd_bis(t_msh *msh, t_token *cpy, int i)
 			close(msh->fd[0]);
 			close(msh->fd[1]);
 		}
-		unlink_here_doc(msh, cpy);
 		i++;
 	}
+	unlink_here_doc(msh, cpy);
 	return (i);
 }
 
